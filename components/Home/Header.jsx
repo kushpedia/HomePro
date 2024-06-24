@@ -7,7 +7,7 @@ const Header = () => {
 		<View style={{
 			displsy: 'flex',
 			marginTop: 10,
-			backgroundColor: '#cbebd0',
+			backgroundColor: 'white',
 			borderRadius: 4,
 			marginRight: 5,
 			padding: 10,
@@ -36,9 +36,14 @@ const Header = () => {
 				backgroundColor: '#fff',
 				padding: 8,
 				borderRadius: 10,
+				borderWidth: 1,
+				borderColor: "thistle",
 			}}>
 
-				<TextInput placeholder='Search for Serices' />
+				<TextInput placeholder='Search for Serices'
+					style={{
+						width: 100,
+					}} />
 				<Ionicons name="search" size={32} color="black" />
 			</View>
 		</View>

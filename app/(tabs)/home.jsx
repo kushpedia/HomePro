@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Header from '../../components/Home/Header'
+import Category from '../../components/Home/Category'
+import Cleaningservices from '../../components/Home/Cleaningservices'
 
 
 const home = () => {
@@ -13,8 +15,11 @@ const home = () => {
 
 			<Header />
 
+			<Category />
 
-			<Text>homes</Text>
+			<Cleaningservices />
+
+
 		</View>
 	)
 }

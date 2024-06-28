@@ -40,9 +40,9 @@ const Header = () => {
 				borderColor: "thistle",
 			}}>
 
-				<TextInput placeholder='Search for Serices'
+				<TextInput placeholder='Search for Services'
 					style={{
-						width: 100,
+						width: 200,
 					}} />
 				<Ionicons name="search" size={32} color="black" />
 			</View>

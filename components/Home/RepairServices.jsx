@@ -4,7 +4,7 @@ import { db } from '../../configs/FirebaseConfig'
 import { collection, getDocs, query, limit, where } from 'firebase/firestore'
 
 
-const Cleaningservices = () => {
+const Repairservices = () => {
 	const [isLoading, setIsLoading] = useState(false)
 	const [cleaningServices, setcleaningServices] = useState([])
 
@@ -15,7 +15,7 @@ const Cleaningservices = () => {
 		setIsLoading(true)
 		setcleaningServices([])
 		try {
-			const q = query(collection(db, 'Services'), where("category", '==', "Cleaner"))
+			const q = query(collection(db, 'Services'), where("category", '==', "Maintenance"))
 			const querySnapshot = await getDocs(q)
 			querySnapshot.forEach((doc) => {
 				setcleaningServices((prev) => [...prev, doc.data()])
@@ -43,7 +43,7 @@ const Cleaningservices = () => {
 						fontFamily: 'outfit-Bold',
 						fontSize: 16,
 
-					}}>Cleaning Services</Text>
+					}}>Repairing Services</Text>
 				<Text
 					style={{
 						fontFamily: 'outfit-Medium'
@@ -98,4 +98,4 @@ const Cleaningservices = () => {
 	)
 }
 
-export default Cleaningservices
+export default Repairservices

@@ -1,10 +1,11 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import Header from '../../components/Profile/Header'
 
 const profile = () => {
 	return (
 		<View>
-			<Text>profile</Text>
+			<Header />
 		</View>
 	)
 }

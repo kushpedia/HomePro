@@ -61,17 +61,23 @@ const Login = () => {
 						}}>Bringing Quality Home Services To You</Text>
 				</View>
 
+				<View style={{
 
-				<Image source={require('./../assets/images/Landingpage1.png')}
-					style={{
-						width: '',
-						height: 600,
-						marginHorizontal: 20,
-						marginTop: 20,
-						borderRadius: 20,
+					height: 610,
+					width: 380,
+					marginHorizontal: 10,
+					marginTop: 20,
+				}}>
+					<Image source={require('./../assets/images/homeservices.png')}
+						style={{
+							width: '100%',
+							height: '100%',
 
-					}}
-				/>
+							borderRadius: 20,
+						}}
+					/>
+				</View>
+
 			</View>
 			<TouchableOpacity
 				onPress={onContinuePress}
@@ -82,7 +88,7 @@ const Login = () => {
 					justifyContent: 'center',
 					alignItems: 'center',
 					backgroundColor: 'lightgrey',
-					width: 370,
+					width: 390,
 					marginHorizontal: 10,
 					height: 70,
 					borderWidth: 1,

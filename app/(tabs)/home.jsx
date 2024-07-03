@@ -18,8 +18,9 @@ const home = () => {
 			showsVerticalScrollIndicator={false}>
 
 			<Header />
-			<Text>Homes</Text>
+
 			<Category />
+
 
 			<Cleaningservices />
 			<Repairservices />

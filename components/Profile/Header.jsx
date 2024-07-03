@@ -16,7 +16,7 @@ const Header = () => {
 				alignItems: 'center',
 				flexDirection: 'row',
 				gap: 10,
-				backgroundColor: 'grey',
+				backgroundColor: 'white',
 				borderBottomRightRadius: 20,
 				borderBottomLeftRadius: 20,
 
@@ -35,7 +35,7 @@ const Header = () => {
 
 			</View>
 
-			<Logout />
+			{/* <Logout /> */}
 		</View >
 	)
 }

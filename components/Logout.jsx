@@ -1,8 +1,7 @@
 import React from "react";
-import { SafeAreaView, Text, StyleSheet, View, Button } from "react-native";
-import { ClerkProvider, SignedIn, SignedOut, useAuth } from "@clerk/clerk-expo";
-
-import Constants from "expo-constants"
+import { Text, TouchableOpacity } from "react-native";
+import { useAuth } from "@clerk/clerk-expo";
+import { Ionicons } from '@expo/vector-icons';
 import * as SecureStore from "expo-secure-store";
 
 const Logout = () => {
@@ -25,27 +24,41 @@ const Logout = () => {
 
 	const { isLoaded, signOut } = useAuth();
 	return (
-		<View>
-			<Button
-				title="Sign Out"
-				onPress={() => {
-					signOut();
-				}}
-			/>
-		</View>
+
+		<TouchableOpacity
+			style={{
+				display: 'flex',
+				flexDirection: 'row',
+				alighnItems: 'center',
+				justifyContent: 'space-between',
+				backgroundColor: "blue",
+				borderRadius: 10,
+				height: 50,
+				marginTop: 40,
+				padding: 10,
+				marginHorizontal: 80,
+			}}
+
+			onPress={() => {
+				signOut();
+			}}
+		>
+			<Text
+				style={{
+					textAlign: "center",
+					color: "white",
+					fontSize: 24,
+					fontFamily: "outfit-Bold",
+				}}> Log Out</Text><Ionicons name="exit-outline" size={32} color="white"
+					style={{ marginRight: 10 }} />
+		</TouchableOpacity>
+
 
 
 
 	);
 };
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-	}
-});
+
 
 export default Logout

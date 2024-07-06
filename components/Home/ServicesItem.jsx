@@ -1,11 +1,10 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, View, Image } from 'react-native'
+import { ActivityIndicator, FlatList, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useLocalSearchParams, useNavigation } from 'expo-router'
-import { collection, query, getDocs, where } from 'firebase/firestore'
-import { db } from '../../configs/FirebaseConfig'
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router'
 
-const ServicesItem = ({ services, onServicePress }) => {
 
+const ServicesItem = ({ services }) => {
+	const router = useRouter()
 
 	return (
 
@@ -45,7 +44,8 @@ const ServicesItem = ({ services, onServicePress }) => {
 				</View>
 
 				<View style={{ flexDirection: 'row' }}>
-					<Text
+					<Text numberOfLines={3}
+						ellipsizeMode="tail"
 						style={{
 							flex: 1,
 							flexWrap: 'wrap',
@@ -65,14 +65,30 @@ const ServicesItem = ({ services, onServicePress }) => {
 					marginTop: 5,
 
 				}}>
-					<View style={{
+					<TouchableOpacity style={{
 						display: 'flex',
 						flexDirection: 'row',
-						gap: 5
-					}}>
+						justifyContent: 'space-between',
+						alignItems: 'center',
+						padding: 8,
+						borderRadius: 10,
+						borderWidth: 1,
+						borderColor: 'grey',
+						margintop: 4,
+					}}
 
+						onPress={() => router.push(`/serviceProviders/` + services.name)}
 
-					</View>
+					>
+
+						<Text
+							style={{
+								fontFamily: 'outfit-Bold',
+								fontSize: 16,
+								textAlign: 'center',
+								color: '#007cb9',
+							}}>Service Providers </Text>
+					</TouchableOpacity>
 
 				</View>
 			</View>
@@ -81,7 +97,7 @@ const ServicesItem = ({ services, onServicePress }) => {
 
 
 
-		</View>
+		</View >
 	)
 }
 

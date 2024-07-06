@@ -1,49 +1,49 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, View, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useLocalSearchParams, useNavigation } from 'expo-router'
 import { collection, query, getDocs, where } from 'firebase/firestore'
 import { db } from '../../configs/FirebaseConfig'
-
-
-import ServicesItem from '../../components/Home/ServicesItem'
-
-
-export default function ServiceListByCategory() {
-	const [isLoading, setIsLoading] = useState(false)
-	const [serviceByCategory, setServiceByCategory] = useState([])
+import ServiceProviderCard from '../../components/ServiceProvider/ServiceProviderCard'
+const ServiceProviders = () => {
 	const navigation = useNavigation()
-	const { category } = useLocalSearchParams()
+	const { serviceName } = useLocalSearchParams()
+
+	const [isLoading, setIsLoading] = useState(false)
+	const [serviceProviders, setserviceProviders] = useState([])
+
 	useEffect(() => {
+
 		navigation.setOptions({
 			headerShown: true,
-			headerTitle: category,
+			headerTitle: serviceName,
 		})
-		getServicesListByCategory()
+		getServiceProviders()
 	}, [])
-
-	const getServicesListByCategory = async () => {
+	const getServiceProviders = async () => {
 		setIsLoading(true)
-		setServiceByCategory([])
-		const q = query(collection(db, 'Services'), where("category", '==', category))
+		setserviceProviders([])
+		const q = query(collection(db, 'Profile'), where("serviceName", '==', serviceName))
 		const snapshot = await getDocs(q)
 		snapshot.forEach((doc) => {
-			setServiceByCategory((prev) => [...prev, doc.data()])
+			setserviceProviders((prev) => [...prev, doc.data()])
 
 		});
 		setIsLoading(false)
 	}
+
 	return (
 		<View style={{ display: 'flex', marginTop: 30 }}>
-			{serviceByCategory?.length > 0 && isLoading == false ?
+			{serviceProviders?.length > 0 && isLoading == false ?
 				<FlatList
-					data={serviceByCategory}
+					data={serviceProviders}
 
 					renderItem={({ item, index }) => (
-						<ServicesItem services={item}
-						/>
-					)
+						<ServiceProviderCard provider={item} />
 
+
+					)
 					} />
+
 				: isLoading ? < ActivityIndicator
 					size='xlarge'
 					color='red' />
@@ -56,15 +56,18 @@ export default function ServiceListByCategory() {
 						marginTop: '50%',
 
 					}}>
-						<Text>No Services Found for </Text>
+						<Text>No Service Providers Found for </Text>
 						<Text
 							style={{
 								fontFamily: 'outfit-Bold',
 								fontSize: 16,
-							}}>{category} </Text>
+							}}>{serviceName} </Text>
 					</View>
 			}
 		</View>
 	)
 }
 
+export default ServiceProviders
+
+const styles = StyleSheet.create({})

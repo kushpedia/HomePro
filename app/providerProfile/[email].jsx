@@ -8,6 +8,9 @@ import { collection, query, getDocs, where } from 'firebase/firestore'
 import { db } from '../../configs/FirebaseConfig'
 import { Rating } from 'react-native-ratings';
 import { Ionicons } from '@expo/vector-icons';
+import Reviews from '../../components/Profile/Reviews'
+
+
 
 const GetProfile = () => {
 	const navigation = useNavigation()
@@ -35,107 +38,134 @@ const GetProfile = () => {
 		setIsLoading(false)
 	}
 
+
 	return (
 
 		<View style={{
-			display: 'flex', marginTop: 20, marginLeft: 10,
-			backgroundColor: 'white'
+			flex: 1,
+			backgroundColor: '#fff',
+
 		}}>
-			{serviceProviderProfile?.length > 0 && isLoading == false ?
-				<FlatList
-					data={serviceProviderProfile}
-					renderItem={({ item }) => (
-						<View
-							style={{
-								display: 'flex',
-								flexDirection: 'row',
-								gap: 20
-							}}>
-							<Image source={{ uri: item.profilePic }}
-								style={{
-									width: 120,
-									height: 150,
-									borderRadius: 20,
-									marginTop: 2,
-									borderWidth: 1,
-									borderColor: 'grey',
-								}} />
+			<View style={{
+				display: 'flex', marginTop: 20, marginHorizontal: 10,
+				padding: 10,
+				backgroundColor: 'white',
+				borderWidth: 1,
+				borderColor: 'grey',
+				borderRadius: 20,
+
+			}}>
+				{serviceProviderProfile?.length > 0 && isLoading == false ?
+					<FlatList
+						data={serviceProviderProfile}
+						renderItem={({ item }) => (
 							<View
 								style={{
 									display: 'flex',
-									alignItems: 'center',
-									justifyContent: 'center',
+									flexDirection: 'row',
+									gap: 20
 								}}>
-
-
-								<Text
-									style={{
-										fontSize: 20,
-										color: '#007cb9',
-										fontFamily: 'outfit-Bold',
-									}}>{item.name}</Text>
+								<Image source={{ uri: item.profilePic }}
+									style={styles.profilePic} />
 								<View
 									style={{
 										display: 'flex',
-										flexDirection: 'row',
-										gap: 5,
-
+										alignItems: 'center',
+										justifyContent: 'center',
 									}}>
-									<Rating
-										type='star'
-										ratingCount={5}
-										imageSize={24}
-										count={item.ratings}
-										readonly={true}
 
-									/>
+
 									<Text
 										style={{
 											fontSize: 20,
-											color: 'black',
-											textAlign: 'Top',
+											color: '#007cb9',
 											fontFamily: 'outfit-Bold',
-										}}
-									>{item.ratings}</Text>
+										}}>{item.name}</Text>
+									<View
+										style={{
+											display: 'flex',
+											flexDirection: 'row',
+											gap: 5,
+
+										}}>
+										<Rating
+											type='star'
+											ratingCount={5}
+											imageSize={24}
+											count={item.ratings}
+											readonly={true}
+
+										/>
+										<Text
+											style={{
+												fontSize: 20,
+												color: 'black',
+												textAlign: 'Top',
+												fontFamily: 'outfit-Bold',
+											}}
+										>{item.ratings}</Text>
+									</View>
+
+								</View>
+
+								<View style={{
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+									marginLeft: 20
+								}}>
+									<TouchableOpacity>
+										<Ionicons name="heart-outline" size={32} color="red" />
+									</TouchableOpacity>
 								</View>
 
 							</View>
+						)
+						}>
 
-							<View style={{
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'center',
-								marginLeft: 20
-							}}>
-								<TouchableOpacity>
-									<Ionicons name="heart-outline" size={32} color="red" />
-								</TouchableOpacity>
-							</View>
+					</FlatList > : isLoading ? < ActivityIndicator
+						size='xlarge'
+						color='red' /> :
+						<View style={
+							styles.nodetails
+						}>
+							<Text>No Details Found </Text>
 
 						</View>
-					)
-					}>
+				}
 
-				</FlatList > : isLoading ? < ActivityIndicator
-					size='xlarge'
-					color='red' /> :
-					<View style={{
-						display: 'flex',
-						flexDirection: 'row',
-						justifyContent: 'center',
-						alignItems: 'center',
-						marginTop: '50%',
 
-					}}>
-						<Text>No Details Find </Text>
+			</View >
 
-					</View>
+			{serviceProviderProfile?.length > 0 && isLoading == false ?
+				<Reviews serviceProvider={serviceProviderProfile} /> : isLoading ? < ActivityIndicator /> : <Text>No Reviews</Text>
+
 			}
-		</View >
+
+
+		</View>
 
 	)
 }
 
 export default GetProfile
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+	nodetails: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: '50%',
+
+	},
+	profilePic: {
+		width: 120,
+		height: 150,
+		borderRadius: 20,
+		marginTop: 2,
+		borderWidth: 1,
+		borderColor: 'grey',
+	}
+
+})

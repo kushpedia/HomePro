@@ -104,7 +104,7 @@ const Login = () => {
 				<Text
 					style={{
 						color: 'blue',
-						fontSize: 28,
+						fontSize: 24,
 						fontWeight: 'bold',
 						fontFamily: 'outfit-Bold',
 

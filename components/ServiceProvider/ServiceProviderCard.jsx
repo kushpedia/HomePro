@@ -44,7 +44,11 @@ const ServiceProviderCard = ({ provider }) => {
 							fontSize: 16,
 							color: 'black',
 							fontFamily: 'outfit-Medium',
-						}}>{provider.phone}</Text></View>
+						}}>{provider.phone}</Text>
+
+
+
+					</View>
 					<View
 						style={{
 							display: 'flex',

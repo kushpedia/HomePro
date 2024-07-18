@@ -112,7 +112,7 @@ const GetProfile = () => {
 									display: 'flex',
 									alignItems: 'center',
 									justifyContent: 'center',
-									marginLeft: 20
+									marginLeft: 'auto',
 								}}>
 									<TouchableOpacity>
 										<Ionicons name="heart-outline" size={32} color="red" />

@@ -13,6 +13,11 @@ const ServicesItem = ({ services }) => {
 				display: 'flex',
 				flexDirection: 'row',
 				backgroundColor: 'white',
+				borderRadius: 15,
+				borderColor: 'grey',
+				borderWidth: 1,
+				marginTop: 10,
+				padding: 2,
 
 
 			}}>
@@ -30,7 +35,14 @@ const ServicesItem = ({ services }) => {
 						borderRadius: 10,
 					}} />
 			</View>
-			<View >
+			<View
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					flex: 1,
+
+				}}
+			>
 				<View>
 					<Text
 						style={{
@@ -43,17 +55,14 @@ const ServicesItem = ({ services }) => {
 					>{services.name}</Text>
 				</View>
 
-				<View style={{ flexDirection: 'row' }}>
-					<Text numberOfLines={3}
-						ellipsizeMode="tail"
-						style={{
-							flex: 1,
-							flexWrap: 'wrap',
+				<View style={{
+					display: 'flex',
+					flexDirection: 'row',
+					flexWrap: 'wrap',
 
-							fontFamily: 'outfit-Medium',
-							textAlign: 'left',
-							fontSize: 16,
-							marginTop: 2,
+				}}>
+					<Text
+						style={{
 						}}
 					>{services.description}</Text>
 				</View>
@@ -70,11 +79,13 @@ const ServicesItem = ({ services }) => {
 						flexDirection: 'row',
 						justifyContent: 'space-between',
 						alignItems: 'center',
-						padding: 8,
+						padding: 10,
 						borderRadius: 10,
 						borderWidth: 1,
 						borderColor: 'grey',
 						margintop: 4,
+						marginBottom: 10,
+
 					}}
 
 						onPress={() => router.push(`/serviceProviders/` + services.name)}
@@ -87,6 +98,7 @@ const ServicesItem = ({ services }) => {
 								fontSize: 16,
 								textAlign: 'center',
 								color: '#007cb9',
+
 							}}>Service Providers </Text>
 					</TouchableOpacity>
 

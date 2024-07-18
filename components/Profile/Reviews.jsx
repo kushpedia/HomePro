@@ -4,7 +4,7 @@ import {
 	FlatList,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { collection, query, getDocs, where, addDoc } from 'firebase/firestore'
+import { collection, query, getDocs, where, addDoc, orderBy, limit } from 'firebase/firestore'
 import { db } from '../../configs/FirebaseConfig'
 import { Rating } from 'react-native-ratings';
 import { useUser } from '@clerk/clerk-expo';
@@ -169,10 +169,7 @@ const Reviews = ({ serviceProvider }) => {
 								</View>
 								{review?.date ? <CurrentDate date={review?.date} /> : null}
 
-
 							</View>
-
-
 							<View style={{
 								display: 'flex',
 								alignItems: 'flex-start',

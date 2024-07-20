@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 
 const ChatCard = ({ message, count }) => {
-
 	return (
 		<TouchableOpacity style={{
 			display: 'flex',
@@ -31,13 +30,11 @@ const ChatCard = ({ message, count }) => {
 					style={{
 						fontSize: 16,
 						fontFamily: 'BreeSerif-Regular',
-
 					}}>{message.senderName}</Text>
 				<View style={{
 					display: 'flex',
 					flexDirection: 'row',
 					justifyContent: 'space-between',
-
 				}}>
 					<Text
 						style={{
@@ -58,7 +55,6 @@ const ChatCard = ({ message, count }) => {
 								borderRadius: 100,
 								padding: 5,
 							}}>{count}</Text> : ''
-
 					}
 
 				</View>

@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { db } from '../../configs/FirebaseConfig'
-import { collection, getDocs, query, limit, where } from 'firebase/firestore'
+import { collection, getDocs, query, limit, where, or } from 'firebase/firestore'
 import { useUser } from '@clerk/clerk-expo'
 import { Ionicons } from '@expo/vector-icons';
 
@@ -24,7 +24,12 @@ const chat = () => {
 		setIsLoading(true)
 		setMessages([])
 
-		const q = query(collection(db, 'Messages'), where("receiverEmail", '==', user?.primaryEmailAddress?.emailAddress))
+		const q = query(collection(db, 'Messages'),
+			or(
+				where("receiverEmail", '==', user?.primaryEmailAddress?.emailAddress),
+				where("senderEmail", '==', user?.primaryEmailAddress?.emailAddress)
+			)
+		)
 		const snapshot = await getDocs(q)
 		snapshot.forEach((doc) => {
 			setMessages((prev) => [...prev, { id: doc?.id, ...doc.data() }])

@@ -1,3 +1,5 @@
+
+import React from 'react';
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { ClerkProvider, ClerkLoaded, SignedIn, SignedOut } from "@clerk/clerk-expo"

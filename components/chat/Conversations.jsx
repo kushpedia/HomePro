@@ -1,14 +1,23 @@
 import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { useUser } from '@clerk/clerk-expo'
+
 
 const Conversations = ({ myMessages, groupedId }) => {
+	const { user } = useUser()
+	const loggedEmail = user?.primaryEmailAddress?.emailAddress
+
 	const messagesFinal = myMessages[groupedId][0]
-	const unreadMessages = myMessages[groupedId].filter(message => !message.read);
+
+	const unreadMessages = myMessages[groupedId].filter(message => !message.read && message.senderEmail != loggedEmail);
+
 	const count = unreadMessages.length
+
 	return (
 
 
 		<TouchableOpacity
+
 			style={{
 				display: 'flex',
 				flexDirection: 'row',
@@ -40,7 +49,7 @@ const Conversations = ({ myMessages, groupedId }) => {
 						fontSize: 16,
 						fontFamily: 'BreeSerif-Regular',
 
-					}}>{messagesFinal.senderName}</Text>
+					}}>{messagesFinal.senderEmail != loggedEmail ? messagesFinal.senderName : messagesFinal.receiverName}</Text>
 				<View style={{
 					display: 'flex',
 					flexDirection: 'row',

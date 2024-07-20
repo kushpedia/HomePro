@@ -8,12 +8,12 @@ import { db } from '../../configs/FirebaseConfig'
 import { collection, getDocs, query, limit, where } from 'firebase/firestore'
 import { useUser } from '@clerk/clerk-expo'
 import { Ionicons } from '@expo/vector-icons';
-import ChatCard from '../../components/chat/ChatCard'
+
+import Conversations from '../../components/chat/Conversations'
 
 
 const chat = () => {
 	const { user } = useUser()
-
 	const [messages, setMessages] = useState([])
 	const [isLoading, setIsLoading] = useState(false)
 	useEffect(() => {
@@ -31,42 +31,42 @@ const chat = () => {
 		});
 		setIsLoading(false)
 	}
-	const getUnreadCount = (id) => {
-		return messages.filter((message) => !message.read && message.id == id).length + 1;
+
+	// grouping the messages with sender and receiver
+
+	const groupMessages = (messages) => {
+		const groupedMessages = {};
+
+		messages.forEach((message) => {
+			const { senderEmail, receiverEmail } = message;
+			// Create a unique key for the conversation
+			const key = [senderEmail, receiverEmail].sort().join('-');
+
+			// Initialize the group if it doesn't exist
+			if (!groupedMessages[key]) {
+				groupedMessages[key] = [];
+			}
+
+			// Add the message to the group
+			groupedMessages[key].push(message);
+		});
+
+		return groupedMessages;
 	};
+
+	const myMessages = groupMessages(messages)
+	const groupmessagesKeys = Object.keys(myMessages)
+
+
 	return (
 		<View style={{
 			display: 'flex',
 			marginTop: 20,
 		}}>
-			<View style={{
-				display: 'flex',
-				flexDirection: 'row',
-				justifyContent: 'space-between',
-				alignItems: 'center',
-				marginTop: 20,
-			}}>
-				<Text style={{
-					fontSize: 32,
-					marginTop: 20,
-					marginLeft: 80,
-					fontFamily: 'Outfit-Bold',
-				}}>Messages</Text>
+			<View style={styles.header}>
+				<Text style={styles.headerText}>Messages</Text>
 
-				<View style={{
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'space-between',
-					flexDirection: 'row',
-					marginHorizontal: 10,
-					marginTop: 20,
-					gap: 10,
-					backgroundColor: '#fff',
-					padding: 8,
-					borderRadius: 10,
-					borderWidth: 1,
-					borderColor: "thistle",
-				}}>
+				<View style={styles.search}>
 
 					<TextInput placeholder='Search'
 						style={{
@@ -86,10 +86,10 @@ const chat = () => {
 
 			}}
 				showsVerticalScrollIndicator={false}>
-				{messages?.length > 0 && isLoading == false ?
+				{groupmessagesKeys?.length > 0 && isLoading == false ?
 
-					messages?.map((message, index) =>
-						<ChatCard key={index} message={message} count={getUnreadCount(message.id)} />
+					groupmessagesKeys?.map((messageId, index) =>
+						<Conversations groupedId={messageId} myMessages={myMessages} />
 
 					) : isLoading ? < ActivityIndicator
 						size='xlarge'
@@ -107,3 +107,32 @@ const chat = () => {
 }
 
 export default chat
+const styles = StyleSheet.create({
+	headerStyles: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		marginTop: 20,
+	},
+	headerText: {
+		fontSize: 32,
+		marginTop: 20,
+		marginLeft: 80,
+		fontFamily: 'Outfit-Bold',
+	},
+	search: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		flexDirection: 'row',
+		marginHorizontal: 10,
+		marginTop: 20,
+		gap: 10,
+		backgroundColor: '#fff',
+		padding: 8,
+		borderRadius: 10,
+		borderWidth: 1,
+		borderColor: "thistle",
+	},
+})

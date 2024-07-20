@@ -1,21 +1,29 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const ChatCard = ({ message, count }) => {
-
+const Conversations = ({ myMessages, groupedId }) => {
+	const messagesFinal = myMessages[groupedId][0]
+	const unreadMessages = myMessages[groupedId].filter(message => message.read);
+	const count = unreadMessages.length
 	return (
-		<TouchableOpacity style={{
-			display: 'flex',
-			flexDirection: 'row',
-			gap: 10,
-			marginTop: 5,
-		}}>
+
+
+		<TouchableOpacity
+			style={{
+				display: 'flex',
+				flexDirection: 'row',
+				gap: 10,
+
+				marginTop: 5,
+			}}
+
+		>
 			<View
 				style={{
 					displayy: 'flex',
 					gapp: 10,
 				}}>
-				<Image source={{ uri: message.senderImage ? message.senderImage : 'https://ocdn.eu/pulscms-transforms/1/ov6k9kpTURBXy82OWE2OWZmNWQxMDgwNGYzY2IxMmNiMjI3YzdhODQ1NS5qcGeSlQMAzFDNCgDNBaCTBc0DFs0Brt4AAqEwBqExAA' }}
+				<Image source={{ uri: messagesFinal.senderImage ? messagesFinal.senderImage : 'https://ocdn.eu/pulscms-transforms/1/ov6k9kpTURBXy82OWE2OWZmNWQxMDgwNGYzY2IxMmNiMjI3YzdhODQ1NS5qcGeSlQMAzFDNCgDNBaCTBc0DFs0Brt4AAqEwBqExAA' }}
 					style={{
 						width: 50,
 						height: 50,
@@ -32,7 +40,7 @@ const ChatCard = ({ message, count }) => {
 						fontSize: 16,
 						fontFamily: 'BreeSerif-Regular',
 
-					}}>{message.senderName}</Text>
+					}}>{messagesFinal.senderName}</Text>
 				<View style={{
 					display: 'flex',
 					flexDirection: 'row',
@@ -42,7 +50,7 @@ const ChatCard = ({ message, count }) => {
 					<Text
 						style={{
 							width: 250,
-						}}>{message.text}</Text>
+						}}>{messagesFinal.text}</Text>
 
 					{count > 0 ?
 
@@ -63,10 +71,11 @@ const ChatCard = ({ message, count }) => {
 
 				</View>
 			</View>
-		</TouchableOpacity>
+		</TouchableOpacity >
 	)
 }
 
-export default ChatCard
+export default Conversations
 
 const styles = StyleSheet.create({})
+

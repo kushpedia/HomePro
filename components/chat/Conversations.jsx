@@ -3,7 +3,7 @@ import React from 'react'
 
 const Conversations = ({ myMessages, groupedId }) => {
 	const messagesFinal = myMessages[groupedId][0]
-	const unreadMessages = myMessages[groupedId].filter(message => message.read);
+	const unreadMessages = myMessages[groupedId].filter(message => !message.read);
 	const count = unreadMessages.length
 	return (
 

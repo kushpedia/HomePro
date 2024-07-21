@@ -1,12 +1,16 @@
-import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native'
 import { useUser } from '@clerk/clerk-expo'
-
+import { useRouter } from 'expo-router';
 
 const Conversations = ({ myMessages, groupedId }) => {
+	const navigation = useNavigation();
+	const router = useRouter();
 	const { user } = useUser()
 	const loggedEmail = user?.primaryEmailAddress?.emailAddress
 	const messagesFinal = myMessages[groupedId][0]
+	const messagesGroupedTogether = myMessages[groupedId]
 
 	const unreadMessages = myMessages[groupedId].filter(message => !message.read && message.senderEmail != loggedEmail);
 	const count = unreadMessages.length
@@ -18,12 +22,17 @@ const Conversations = ({ myMessages, groupedId }) => {
 			return messagesFinal.senderImage
 		}
 	}
-
+	const MessageImage = getImage()
+	const MessageName = messagesFinal.senderEmail != loggedEmail ? messagesFinal.senderName : messagesFinal.receiverName
+	const handleNavigate = () => {
+		navigation.navigate('GroupedMessages', { data: messagesGroupedTogether, MessageImage, MessageName });
+	};
 	return (
 
 
 		<TouchableOpacity
 			key={groupedId}
+			onPress={handleNavigate}
 
 			style={{
 				display: 'flex',

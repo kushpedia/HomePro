@@ -24,7 +24,6 @@ const ConversationsHomePage = () => {
 	const getMessages = async () => {
 		setIsLoading(true)
 		setMessages([])
-
 		const q = query(collection(db, 'Messages'),
 			or(
 				where("receiverEmail", '==', user?.primaryEmailAddress?.emailAddress),

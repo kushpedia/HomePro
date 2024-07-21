@@ -6,12 +6,18 @@ import { useUser } from '@clerk/clerk-expo'
 const Conversations = ({ myMessages, groupedId }) => {
 	const { user } = useUser()
 	const loggedEmail = user?.primaryEmailAddress?.emailAddress
-
 	const messagesFinal = myMessages[groupedId][0]
 
 	const unreadMessages = myMessages[groupedId].filter(message => !message.read && message.senderEmail != loggedEmail);
-
 	const count = unreadMessages.length
+
+	const getImage = () => {
+		if (messagesFinal.senderEmail == loggedEmail) {
+			return messagesFinal.receiverImage
+		} else {
+			return messagesFinal.senderImage
+		}
+	}
 
 	return (
 
@@ -26,14 +32,13 @@ const Conversations = ({ myMessages, groupedId }) => {
 
 				marginTop: 5,
 			}}
-
 		>
 			<View
 				style={{
 					displayy: 'flex',
 					gapp: 10,
 				}}>
-				<Image source={{ uri: messagesFinal.senderImage ? messagesFinal.senderImage : 'https://ocdn.eu/pulscms-transforms/1/ov6k9kpTURBXy82OWE2OWZmNWQxMDgwNGYzY2IxMmNiMjI3YzdhODQ1NS5qcGeSlQMAzFDNCgDNBaCTBc0DFs0Brt4AAqEwBqExAA' }}
+				<Image source={{ uri: getImage() ? getImage() : 'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png' }}
 					style={{
 						width: 50,
 						height: 50,

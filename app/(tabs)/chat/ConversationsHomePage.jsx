@@ -4,15 +4,16 @@ import {
 	Text, View, FlatList, TouchableOpacity, Image, ScrollView
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { db } from '../../configs/FirebaseConfig'
+import { db } from '../../../configs/FirebaseConfig'
 import { collection, getDocs, query, limit, where, or } from 'firebase/firestore'
 import { useUser } from '@clerk/clerk-expo'
 import { Ionicons } from '@expo/vector-icons';
+import Conversations from '../../../components/chat/Conversations'
 
-import Conversations from '../../components/chat/Conversations'
 
 
-const chat = () => {
+
+const ConversationsHomePage = () => {
 	const { user } = useUser()
 	const [messages, setMessages] = useState([])
 	const [isLoading, setIsLoading] = useState(false)
@@ -111,7 +112,7 @@ const chat = () => {
 	)
 }
 
-export default chat
+export default ConversationsHomePage
 const styles = StyleSheet.create({
 	headerStyles: {
 		display: 'flex',

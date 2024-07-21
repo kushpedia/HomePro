@@ -17,6 +17,7 @@ const Conversations = ({ myMessages, groupedId }) => {
 
 
 		<TouchableOpacity
+			key={groupedId}
 
 			style={{
 				display: 'flex',

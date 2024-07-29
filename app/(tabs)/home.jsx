@@ -18,7 +18,8 @@ const home = () => {
 			showsVerticalScrollIndicator={false}>
 
 			<Header />
-			<Text>Homes</Text>
+			{/* <Text>Home</Text>
+			<Text>Home2</Text> */}
 			<Category />
 
 

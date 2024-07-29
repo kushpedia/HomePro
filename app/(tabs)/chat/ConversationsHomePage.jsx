@@ -44,6 +44,7 @@ const ConversationsHomePage = () => {
 
 		messages.forEach((message) => {
 			const { senderEmail, receiverEmail } = message;
+
 			// Create a unique key for the conversation
 			const key = [senderEmail, receiverEmail].sort().join('-');
 

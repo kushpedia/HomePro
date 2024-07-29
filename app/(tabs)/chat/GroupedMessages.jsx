@@ -1,21 +1,29 @@
-import { StyleSheet, Text, View, ScrollView, TextInput, Keyboard, TouchableOpacity } from 'react-native'
+import {
+	StyleSheet, Text, View,
+	ScrollView, TextInput, Keyboard,
+	ToastAndroid, TouchableOpacity
+} from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useRoute } from '@react-navigation/native';
 import MessagesHeader from '../../../components/chat/MessagesHeader';
 import MessageCard from '../../../components/chat/MessageCard';
 import { useUser } from '@clerk/clerk-expo'
 import { Ionicons } from '@expo/vector-icons';
+import { collection, query, getDocs, where, addDoc, orderBy, limit } from 'firebase/firestore'
+import { db } from '../../../configs/FirebaseConfig'
 const GroupedMessages = () => {
+	const currentDate = new Date()
 	const [keyboardVisible, setKeyboardVisible] = useState(false);
-
 	const route = useRoute();
 	const { user } = useUser()
-	const [textInput, setTextInput] = useState('')
-
-
+	const [messageInput, setMessageInput] = useState('')
 	const LoggedEmail = user?.primaryEmailAddress?.emailAddress
-
 	const { data, MessageImage, MessageName } = route.params || {};
+	const messageSenderName = data[0].senderEmail == LoggedEmail ? data[0].senderName : data[0].receiverName
+	const messageReceiverName = data[0].senderEmail != LoggedEmail ? data[0].senderName : data[0].receiverName
+	const senderEmails = data[0].senderEmail == LoggedEmail ? data[0].receiverEmail : data[0].senderEmail
+	const todayDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}  ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`
+
 	useEffect(() => {
 		const keyboardDidShowListener = Keyboard.addListener(
 			'keyboardDidShow',
@@ -31,8 +39,26 @@ const GroupedMessages = () => {
 			keyboardDidHideListener.remove();
 		};
 	}, []);
-	const handleMessageSend = () => {
-		console.log(textInput)
+	const handleMessageSend = async () => {
+
+		const docRef = collection(db, "Messages")
+		const data = {
+			createdAt: todayDate,
+			read: false,
+			senderEmail: LoggedEmail,
+			receiverEmail: senderEmails,
+			receiverName: messageReceiverName,
+			senderName: messageSenderName,
+			text: messageInput,
+			senderImage: user?.imageUrl,
+			receiverImage: MessageImage,
+			uniquId: `${LoggedEmail}-${senderEmails}-${todayDate}`
+		}
+		await addDoc(docRef, data)
+		ToastAndroid.show("Message Sent", ToastAndroid.TOP)
+		console.log(`Message sent successfully : ${messageInput}`)
+		setMessageInput('')
+
 	}
 	return (
 		<View >
@@ -50,11 +76,6 @@ const GroupedMessages = () => {
 								<MessageCard key={key} record={record} />
 							</View>
 
-
-
-
-
-
 						);
 					})
 				)}
@@ -65,8 +86,8 @@ const GroupedMessages = () => {
 						style={{
 							width: 200,
 						}}
-						value={textInput}
-						onChangeText={(text) => setTextInput(text)} />
+						value={messageInput}
+						onChangeText={(text) => setMessageInput(text)} />
 					<TouchableOpacity onPress={handleMessageSend}>
 						<Ionicons name="send" size={24} color="black" />
 					</TouchableOpacity>
@@ -89,33 +110,39 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		padding: 8,
 		marginTop: 10,
+		marginBottom: 70,
 		flexWrap: 'wrap',
 	},
 	messageCard: {
-		display: 'flex',
 		flexDirection: 'row',
-		fontSize: 16,
-		fontFamily: 'BreeSerif-Regular',
-		marginTop: 10,
-		borderRadius: 10,
-		padding: 4,
-		borderWidth: 1,
-		width: '86%',
+		alignItems: 'flex-end',
+		marginVertical: 8,
+		paddingHorizontal: 10,
+
+
+		// display: 'flex',
+		// flexDirection: 'row',
+		// fontSize: 16,
+		// fontFamily: 'BreeSerif-Regular',
+		// marginTop: 10,
+		// borderRadius: 10,
+		// padding: 4,
+		// borderWidth: 1,
+
+
 
 	},
 	otherMessages: {
-		borderColor: 'green',
-		alignItems: 'flex-end',
-		backgroundColor: '#F9CB9C',
-		alignItems: 'flex-start',
+		ustifyContent: 'flex-start',
+
 
 	},
 	messageText: {
-		borderColor: 'grey',
-		alignItems: 'flex-start',
-		backgroundColor: '#CFE2F3',
-		alignItems: 'flex-end',
-		marginLeft: 60,
+		justifyContent: 'flex-end',
+
+
+
+
 	},
 	inputContainer: {
 		display: 'flex',

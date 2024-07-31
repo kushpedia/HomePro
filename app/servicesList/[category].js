@@ -36,8 +36,9 @@ export default function ServiceListByCategory() {
 		<View style={{ display: 'flex', marginTop: 30 }}>
 			{serviceByCategory?.length > 0 && isLoading == false ?
 				<FlatList
+					onRefresh={getServicesListByCategory}
+					refreshing={isLoading}
 					data={serviceByCategory}
-
 					renderItem={({ item, index }) => (
 						<ServicesItem services={item}
 						/>

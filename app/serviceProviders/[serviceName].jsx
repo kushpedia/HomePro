@@ -36,7 +36,8 @@ const ServiceProviders = () => {
 			{serviceProviders?.length > 0 && isLoading == false ?
 				<FlatList
 					data={serviceProviders}
-
+					onRefresh={getServiceProviders}
+					refreshing={isLoading}
 					renderItem={({ item, index }) => (
 						<ServiceProviderCard provider={item} />
 

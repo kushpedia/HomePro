@@ -16,6 +16,7 @@ const GroupedMessages = () => {
 	const [keyboardVisible, setKeyboardVisible] = useState(false);
 	const route = useRoute();
 	const { user } = useUser()
+
 	const [messageInput, setMessageInput] = useState('')
 	const LoggedEmail = user?.primaryEmailAddress?.emailAddress
 	const { data, MessageImage, MessageName } = route.params || {};
@@ -63,7 +64,6 @@ const GroupedMessages = () => {
 	return (
 		<View >
 			<MessagesHeader image={MessageImage} name={MessageName} />
-
 			<ScrollView style={[styles.scrollStyle, keyboardVisible ? styles.keyboardmarginbottom : styles.scrollStyle,]}
 				showsVerticalScrollIndicator={false}>
 

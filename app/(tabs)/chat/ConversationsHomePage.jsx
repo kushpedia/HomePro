@@ -10,9 +10,6 @@ import { useUser } from '@clerk/clerk-expo'
 import { Ionicons } from '@expo/vector-icons';
 import Conversations from '../../../components/chat/Conversations'
 
-
-
-
 const ConversationsHomePage = () => {
 	const { user } = useUser()
 	const [messages, setMessages] = useState([])

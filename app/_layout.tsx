@@ -31,6 +31,8 @@ export default function RootLayout() {
     'outfit-Bold': require('../assets/fonts/Outfit-Bold.ttf'),
     'outfit-Medium': require('../assets/fonts/Outfit-Medium.ttf'),
     'josefinsans-Bold': require('../assets/fonts/JosefinSans-Bold.ttf'),
+    'merriweather-Bold': require('../assets/fonts/Merriweather-Bold.ttf'),
+    'merriweather-BoldItalic': require('../assets/fonts/Merriweather-BoldItalic.ttf'),
   })
   return (
 

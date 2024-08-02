@@ -18,11 +18,9 @@ const home = () => {
 			showsVerticalScrollIndicator={false}>
 
 			<Header />
-			{/* <Text>Home</Text>
-			<Text>Home2</Text> */}
+			<Text>Home</Text>
+
 			<Category />
-
-
 			<Cleaningservices />
 			<Repairservices />
 

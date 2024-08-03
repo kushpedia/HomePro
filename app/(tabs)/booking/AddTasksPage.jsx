@@ -1,19 +1,27 @@
 import {
 	StyleSheet, Text,
 	View, ScrollView, TextInput,
-	ActivityIndicator, Button
+	ActivityIndicator, Button, ToastAndroid, Dimensions
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import InputField from '../../../components/booking/InputField'
 import { collection, query, getDocs, where, addDoc, orderBy, limit } from 'firebase/firestore'
 import { db } from '../../../configs/FirebaseConfig'
 import RNPickerSelect from 'react-native-picker-select';
+import { useUser } from '@clerk/clerk-expo'
+import * as Location from 'expo-location';
+import MapView, { Marker } from 'react-native-maps';
 const AddTasksPage = () => {
+	const { user } = useUser()
+	const LoggedEmail = user?.primaryEmailAddress?.emailAddress
+	const [location, setLocation] = useState(null);
+	const [pickedLocation, setPickedLocation] = useState(null);
 	const [categories, setCategories] = useState([]);
 	const [services, setServices] = useState([]);
 	const [serviceCategory, setServiceCategory] = useState('');
 	const [pickedService, setPickedService] = useState('');
 	const [loading, setLoading] = useState(false);
+	const [taskDescription, setTaskDescription] = useState('')
 	useEffect(() => {
 		const fetchCategories = async () => {
 			setLoading(true);
@@ -57,7 +65,47 @@ const AddTasksPage = () => {
 		fetchServices();
 	}, []);
 
+	const handleSubmit = async () => {
 
+		const docRef = collection(db, "Tasks")
+		const data = {
+			category: serviceCategory,
+			service: pickedService,
+			date: new Date().toISOString(),
+			taskDescription: taskDescription,
+			latitude: pickedLocation.latitude,
+			longitude: pickedLocation.longitude,
+			status: 'Open',
+			postedBy: LoggedEmail,
+		}
+		await addDoc(docRef, data)
+		ToastAndroid.show("Task Posted", ToastAndroid.TOP)
+	}
+	const getLocation = async () => {
+		const { status } = await Location.requestForegroundPermissionsAsync();
+		if (status !== 'granted') {
+			console.log('Permission to access location was denied');
+			return;
+		}
+
+		const loc = await Location.getCurrentPositionAsync({});
+		setLocation({
+			latitude: loc.coords.latitude,
+			longitude: loc.coords.longitude,
+			latitudeDelta: 0.0922,
+			longitudeDelta: 0.0421,
+		});
+	};
+
+	useEffect(() => {
+		getLocation();
+	}, []);
+	const pickLocationHandler = (event) => {
+		setPickedLocation({
+			latitude: event.nativeEvent.coordinate.latitude,
+			longitude: event.nativeEvent.coordinate.longitude,
+		});
+	};
 
 	return (
 		<ScrollView>
@@ -71,6 +119,7 @@ const AddTasksPage = () => {
 					fontSize: 20,
 				}}>Enter Task Details</Text>
 			</View >
+
 			<View style={styles.formContainer}>
 
 				{loading ? (
@@ -102,13 +151,50 @@ const AddTasksPage = () => {
 					</View>
 				)}
 
-				<InputField
+				{/* <InputField
 					placeholder='Enter task name' />
 				<InputField
-					placeholder='Enter Your location' />
+					placeholder='Enter Your location' /> */}
 
-				<Button title="Submit Task" onPress={() => console.log(serviceCategory, pickedService)} />
+				<TextInput placeholder='Description'
+					multiline={true}
+					style={styles.formSelectField}
+					value={taskDescription}
+					onChangeText={(text) => setTaskDescription(text)} />
+
+				<View style={{
+					flex: 1,
+					alignItems: 'center',
+					justifyContent: 'center'
+				}}>
+					<Text style={{
+						fontFamily: 'merriweather-Bold',
+						fontSize: 14,
+						marginBotton: 10,
+					}}>Select Location</Text>
+					{location ? (
+						<MapView
+							style={{
+								width: Dimensions.get('window').width * 0.9,
+								height: Dimensions.get('window').height * 0.3,
+							}}
+							initialRegion={location}
+							onPress={pickLocationHandler}
+						>
+							{pickedLocation && (
+								<Marker coordinate={pickedLocation} />
+							)}
+						</MapView>
+					) : (
+						<Text>Fetching location...</Text>
+					)}
+
+				</View>
+
+				<Button title="Submit Task" onPress={handleSubmit} />
+
 			</View>
+
 
 		</ScrollView >
 	)
@@ -120,9 +206,9 @@ const styles = StyleSheet.create({
 	formContainer: {
 		display: 'flex',
 		gap: 30,
-		width: '85%',
+		width: '95%',
 		marginHorizontal: 'auto',
-		backgroundColor: '#fff',
+		backgroundColor: '#D78D76',
 		padding: 10,
 		paddingBottom: 60,
 		borderRadius: 10,

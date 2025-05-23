@@ -25,9 +25,6 @@ const Cleaningservices = () => {
 			alert(err)
 		}
 
-
-
-
 	}
 	return (
 		<View>
